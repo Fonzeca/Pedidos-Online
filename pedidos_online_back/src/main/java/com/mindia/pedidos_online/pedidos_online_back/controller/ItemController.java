@@ -1,7 +1,18 @@
 package com.mindia.pedidos_online.pedidos_online_back.controller;
 
-import com.mindia.pedidos_online.pedidos_online_back.manager.ItemManager;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mindia.pedidos_online.pedidos_online_back.manager.ItemManager;
+import com.mindia.pedidos_online.pedidos_online_back.view.PojoItem;
+
+@RestController
+@RequestMapping("/item")
 public class ItemController {
 	
 	/**
@@ -10,10 +21,20 @@ public class ItemController {
 	 * entre los usuarios finales y los datos.
 	 */
 	
+	@Autowired
 	private ItemManager manager;
 	
-	public void newItem (String name, String description, String price, String image) {
-		manager.newItem(name, description, price, image);
+	
+	@GetMapping("/list")
+	public List<PojoItem> getAllItems(){
+		return manager.getItems();
 	}
+	@GetMapping("/listBySection")
+	public List<PojoItem> getItemsBySection(@RequestParam String section){
+		return manager.getItemsBySection(section);
+	}
+//	public void newItem (String name, String description, String price, String image) {
+//		manager.newItem(name, description, price, image);
+//	}
 
 }
