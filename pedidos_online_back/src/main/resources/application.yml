@@ -3,9 +3,9 @@ database:
         user: usrPedidosOnline
         password: Huffman123
         ip: vps-1791261-x.dattaweb.com
-        port: 4596
+        port: 27017
         db: PedidosOnline
 server:
-     port: 45589
+     port: 4596
      error:
         include-message: always

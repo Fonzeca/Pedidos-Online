@@ -1,16 +1,11 @@
 package com.mindia.pedidos_online.pedidos_online_back.security;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
