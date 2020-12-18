@@ -1,0 +1,9 @@
+name: item_repository
+description: Dart package which manages the item domain.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.7 <3.0.0"
+
+dependencies:
+  http: ^0.12.2
