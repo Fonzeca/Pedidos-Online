@@ -17,6 +17,10 @@ public class SectionController {
 	@Autowired
 	private SectionManager manager;
 	
+	/**
+	 * 
+	 * @return una lista de secciones.
+	 */
 	@GetMapping("/list")
 	public List<PojoSection> getAllSections(){
 		return manager.getSections();
