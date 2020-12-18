@@ -33,8 +33,19 @@ public class ItemController {
 	public List<PojoItem> getItemsBySection(@RequestParam String section){
 		return manager.getItemsBySection(section);
 	}
-//	public void newItem (String name, String description, String price, String image) {
-//		manager.newItem(name, description, price, image);
-//	}
+	
+	/**
+	 * Solo para uso del unit Test
+	 */
+	public void newItem (String name, String description, String price, String image, String section) {
+		manager.newItem(name, description, price, image, section);
+	}
+	
+	/**
+	 * Solo para uso del unit Test
+	 */
+	public void deleteItem (String name) {
+		manager.deleteItem(name);
+	}
 
 }

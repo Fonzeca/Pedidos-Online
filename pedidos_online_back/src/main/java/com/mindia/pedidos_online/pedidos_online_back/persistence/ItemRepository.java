@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mindia.pedidos_online.pedidos_online_back.persistence.model.Item;
@@ -19,15 +21,25 @@ public class ItemRepository {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	
+	/**
+	 * Solo para tests 
+	 */
 	public void newItem(Item item) {
-		//TODO: connect to db and upload the item itself weee re yankee
-		System.out.println("Producto "+item.getName()+" cargado con éxito!");
-
+		mongoTemplate.insert(item);
+	}
+	
+	/**
+	 * Solo para tests 
+	 */
+	public void deleteItem(String name) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("name").is(name));
+		
+		mongoTemplate.remove(query, "items");
 	}
 
 	public List<Item> getItems() {
 		return mongoTemplate.findAll(Item.class);
-
 	}
 	
 

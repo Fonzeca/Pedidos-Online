@@ -21,10 +21,14 @@ public class ItemManager {
 	@Autowired
 	private ItemRepository repo;
 	
-//	public void newItem(String name, String description, String price, String image) {
-//		Item item = new Item(name, description, price);
-//		repo.newItem(item);
-//	}
+	public void newItem(String name, String description, String price, String image, String section) {
+		Item item = new Item(name, description, price, image, section);
+		repo.newItem(item);
+	}
+	
+	public void deleteItem(String name) {
+		repo.deleteItem(name);
+	}
 	
 	public List<PojoItem> getItems(){
 		List<PojoItem> itemsPojo= new ArrayList<PojoItem>();
