@@ -51,4 +51,22 @@ class ServidorRest{
     return items;
   }
 
+  Future<List<Section>> getAllSections() async{
+
+    String endpoint = "/section/list";
+
+    var response = await client.get(IpServer + ":" + Port + endpoint);
+
+    print("getAllSections/ Status: " + response.statusCode.toString() + " Body: " + response.body);
+
+    if(response.statusCode != 200) throw new Exception ("No se pudo conectar.");
+
+    var jsonData = json.decode(response.body);
+    List<Section> sections = [];
+    for(var s in jsonData){
+      Section section = Section.fromJson(s);
+      sections.add(section);
+    }
+    return items;
+  }
 }
