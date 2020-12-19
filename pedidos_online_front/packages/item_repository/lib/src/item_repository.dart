@@ -4,6 +4,8 @@ import 'dart:convert';
 import '../item_repository.dart';
 import 'package:http/http.dart' as http;
 
+import 'client/mindia_http_client.dart';
+
 
 class ServidorRest{
 
@@ -12,7 +14,6 @@ class ServidorRest{
   final String Port = "4596";
 
   Future<List<Item>> getAllItems() async{
-
     String endpoint = "/item/list";
 
     var response = await client.get(IpServer + ":" + Port + endpoint);
@@ -42,7 +43,7 @@ class ServidorRest{
       throw new Exception("No se pudo conectar.");
     }
 
-    var n = json.decode(response.body);
+    var jsonData = json.decode(response.body);
     List<Item> items = [];
     for(var i in jsonData){
       Item item = Item.fromJson(i);
@@ -67,6 +68,6 @@ class ServidorRest{
       Section section = Section.fromJson(s);
       sections.add(section);
     }
-    return items;
+    return sections;
   }
 }
