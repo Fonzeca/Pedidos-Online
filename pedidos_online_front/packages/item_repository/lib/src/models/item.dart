@@ -1,5 +1,7 @@
 //TODO: modelar tanto items como secciones.
-class Item{
+import 'package:equatable/equatable.dart';
+
+class Item extends Equatable{
   final String name;
   final String description;
   final String price;
@@ -14,4 +16,7 @@ class Item{
     price = json['price'],
     image = json['image'],
     section = json['section'];
+
+  @override
+  List<Object> get props => [name, description, price, image, section];
 }

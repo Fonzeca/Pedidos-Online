@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'client/mindia_http_client.dart';
 
 
-class ServidorRest{
+class ItemRepository{
 
   final client = MindiaHttpClient(http.Client());
   final String IpServer = "http://vps-1791261-x.dattaweb.com";

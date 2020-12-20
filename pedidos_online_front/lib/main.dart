@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pedidos_online_front/src/pages/pagina_basico.dart';
+import 'file:///C:/Users/Alexis%20Fonzo/Desktop/Mindia/Software/PedidosOnline/Pedidos%20Online/pedidos_online_front/lib/src/carta/view/pagina_basico.dart';
 
 void main() => runApp(MyApp());
 

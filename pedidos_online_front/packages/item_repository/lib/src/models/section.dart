@@ -1,5 +1,7 @@
 
-class Section {
+import 'package:equatable/equatable.dart';
+
+class Section extends Equatable{
   final String name;
   final String image;
 
@@ -9,4 +11,7 @@ class Section {
   Section.fromJson(Map<String, dynamic> json):
       name = json['name'],
       image = json['image'];
+
+  @override
+  List<Object> get props => [name, image];
 }
