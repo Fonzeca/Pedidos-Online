@@ -6,17 +6,13 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'OpenSans'
-      ),
-      title: 'Material App',
-      initialRoute: 'basico',
-      routes:{
-        'basico': (BuildContext context )=> basico(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Raleway'),
+        title: 'Pedidos Online',
+        initialRoute: 'basico',
+        routes: {
+          'basico': (BuildContext context) => basico(),
+        });
   }
 }
