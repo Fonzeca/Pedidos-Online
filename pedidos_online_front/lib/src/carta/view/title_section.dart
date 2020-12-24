@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TituloSection extends StatelessWidget {
   static String linea = " ___ ";
   final String titulo;
-  final double styleT = 30.0;
+  final double styleT = 20.0;
   final String descripcion;
 
   const TituloSection({Key key, this.titulo, this.descripcion})
@@ -13,7 +13,7 @@ class TituloSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 250.0,
-      height: 100.0,
+      height: 60.0,
       child: Column(
         children: [
           Text(

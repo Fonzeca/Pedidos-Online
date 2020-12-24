@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
@@ -12,29 +13,63 @@ class basico extends StatelessWidget {
           title: Text('Pedidos Online'),
           backgroundColor: Color(0xFF30475E),
         ),
-        body: Column(children: <Widget>[
-          TituloSection(
-            titulo: "Tituloazo",
-            descripcion: "Descripcion",
-          ),
-          Column(
-            children: [
-              ItemLabel(
-                name: "PRUEBA",
-                description: "Esta es una descripcion ",
-                price: "45",
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Image(
-                image: NetworkImage(
-                    'https://www.diarioviral.net/wp-content/uploads/2020/03/flat550x550075f.u1iouio.jpg'),
-                height: 150,
-              ),
-            ],
-          ),
-        ]));
+        body: Container(
+          alignment: Alignment.center,
+          child: Column(children: [
+            TituloSection(
+              titulo: "Jugos y bebidas",
+              descripcion: "Mas frias que el corazon de tu ex",
+            ),
+            //El GridView si esta dentro de una columna debe si o si estar en un expanded
+            Expanded(child: _crearGridView()),
+          ]),
+        ));
   }
+}
+
+// Creo el GridView para retornar en el Scaffold
+
+Widget _crearGridView() {
+  return Container(
+      width: 800,
+      height: 500,
+      color: Colors.black26,
+      child: GridView.count(
+          scrollDirection: Axis.vertical,
+          crossAxisCount: 2,
+          mainAxisSpacing: 0.1,
+          childAspectRatio: 3 / 2,
+          padding: const EdgeInsets.all(15),
+          crossAxisSpacing: 10,
+          shrinkWrap: true,
+          children: [
+            //aqui se pone la lista para mostrar en el gridiview
+            ItemLabel(
+              description: "suave y espumoso",
+              name: "Vino Fino",
+              price: "45",
+            ),
+            ItemLabel(
+              description: "suave y espumoso",
+              name: "Vino Fino",
+              price: "45",
+            ),
+            ItemLabel(
+              description: "suave y espumoso",
+              name: "Vino Fino",
+              price: "45",
+            ),
+            ItemLabel(
+              description: "suave y espumoso",
+              name: "Vino Fino",
+              price: "45",
+            ),
+            ItemLabel(
+              description: "suave y espumoso",
+              name: "Vino Fino",
+              price: "45",
+            ),
+          ])
+      //
+      );
 }
