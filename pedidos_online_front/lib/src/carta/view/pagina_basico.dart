@@ -8,21 +8,41 @@ class basico extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         backgroundColor: Color(0xFFe8e8e8),
         appBar: AppBar(
           title: Text('Pedidos Online'),
           backgroundColor: Color(0xFF30475E),
         ),
-        body: Container(
-          alignment: Alignment.center,
-          child: Column(children: [
-            TituloSection(
-              titulo: "Jugos y bebidas",
-              descripcion: "Mas frias que el corazon de tu ex",
+        body: Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.center,
+                    width: 900,
+                    height: 1000,
+                    color: Colors.grey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TituloSection(
+                          titulo: "Bebidas",
+                          descripcion: "Bien frescas",
+                        ),
+                        Expanded(child: _crearGridView()),
+                        TituloSection(
+                          titulo: "Bebidas",
+                          descripcion: "Bien frescas",
+                        ),
+                        Expanded(child: _crearGridView()),
+                      ],
+                    ))
+              ],
             ),
-            //El GridView si esta dentro de una columna debe si o si estar en un expanded
-            Expanded(child: _crearGridView()),
-          ]),
+          ),
         ));
   }
 }
@@ -32,37 +52,36 @@ class basico extends StatelessWidget {
 Widget _crearGridView() {
   return Container(
       width: 800,
-      height: 500,
       color: Colors.black26,
       child: GridView.count(
+          mainAxisSpacing: 1,
+          padding: EdgeInsets.all(8),
           scrollDirection: Axis.vertical,
           crossAxisCount: 2,
-          mainAxisSpacing: 0.1,
-          childAspectRatio: 3 / 2,
-          padding: const EdgeInsets.all(15),
-          crossAxisSpacing: 10,
+          crossAxisSpacing: 5,
+          childAspectRatio: 3,
           shrinkWrap: true,
           children: [
             //aqui se pone la lista para mostrar en el gridiview
             ItemLabel(
-              description: "suave y espumoso",
-              name: "Vino Fino",
-              price: "45",
+              description: "Amargo,con una lagrima de vaca",
+              name: "Cafe con leche",
+              price: "5",
             ),
             ItemLabel(
-              description: "suave y espumoso",
-              name: "Vino Fino",
-              price: "45",
+              description: "Suave e intenza",
+              name: "Cerveza",
+              price: "20",
             ),
             ItemLabel(
-              description: "suave y espumoso",
-              name: "Vino Fino",
-              price: "45",
+              description: "Jugito recien exprimido",
+              name: "Jugo de Naranja",
+              price: "10",
             ),
             ItemLabel(
-              description: "suave y espumoso",
-              name: "Vino Fino",
-              price: "45",
+              description: "Rico en proteinas",
+              name: "batido con yogurt",
+              price: "10",
             ),
             ItemLabel(
               description: "suave y espumoso",

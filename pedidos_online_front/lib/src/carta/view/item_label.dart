@@ -15,7 +15,7 @@ class ItemLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 1,
+        height: 2,
         width: 10,
         child: Column(
           children: [
