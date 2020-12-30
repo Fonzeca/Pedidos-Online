@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pedidos_online_front/item_observer.dart';
 import 'package:pedidos_online_front/src/carta/view/pagina_basico.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Bloc.observer = ItemObserver();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

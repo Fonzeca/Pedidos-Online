@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 
@@ -7,35 +8,40 @@ import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 class basico extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFe8e8e8),
-      appBar: AppBar(
-        title: Text('Pedidos Online'),
-        backgroundColor: Color(0xFF30475E),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TituloSection(
-              titulo: "Bebidas",
-              descripcion: "Bien frescas",
-            ),
-            Expanded(child: _crearGridView()),
-            TituloSection(
-              titulo: "Bebidas",
-              descripcion: "Bien frescas",
-            ),
-            Expanded(child: _crearGridView()),
-          ],
+    return BlocProvider(
+      create: (_) => ItemCubit(),
+      child: Scaffold(
+        backgroundColor: Color(0xFFe8e8e8),
+        appBar: AppBar(
+          title: Text('Pedidos Online'),
+          backgroundColor: Color(0xFF30475E),
+        ),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TituloSection(
+                titulo: "Bebidas",
+                descripcion: "Bien frescas",
+              ),
+              Expanded(child: _crearGridView()),
+              TituloSection(
+                titulo: "Bebidas",
+                descripcion: "Bien frescas",
+              ),
+              Expanded(child: _crearGridView()),
+            ],
+          ),
         ),
       ),
     );
-
-
   }
+}
+
+class ItemCubit extends Cubit<String> {
+  ItemCubit() : super("none");
 }
 
 // Creo el GridView para retornar en el Scaffold
@@ -46,7 +52,7 @@ Widget _crearGridView() {
       height: double.infinity,
       color: Colors.black26,
       child: GridView.count(
-        physics: NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           mainAxisSpacing: 1,
           padding: EdgeInsets.all(8),
           scrollDirection: Axis.vertical,
@@ -62,12 +68,12 @@ Widget _crearGridView() {
               price: "5",
             ),
             ItemLabel(
-              description: "Suave e intenza",
+              description: "Suave e intensa",
               name: "Cerveza",
               price: "20",
             ),
             ItemLabel(
-              description: "Jugito recien exprimido",
+              description: "Juguito recien exprimido",
               name: "Jugo de Naranja",
               price: "10",
             ),
