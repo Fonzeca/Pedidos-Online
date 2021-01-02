@@ -5,7 +5,7 @@ import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 
 // ignore: camel_case_types
-class ItemView extends StatelessWidget {
+class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

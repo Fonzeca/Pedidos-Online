@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedidos_online_front/item_observer.dart';
-import 'package:pedidos_online_front/src/carta/view/pagina_basico.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_view.dart';
 
 void main() {
   Bloc.observer = ItemObserver();
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Pedidos Online',
         initialRoute: 'basico',
         routes: {
-          'basico': (BuildContext context) => ItemView(),
+          'basico': (BuildContext context) => MenuView(),
         });
   }
 }
