@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Pedidos Online',
         initialRoute: 'basico',
         routes: {
-          'basico': (BuildContext context) => basico(),
+          'basico': (BuildContext context) => ItemView(),
         });
   }
 }

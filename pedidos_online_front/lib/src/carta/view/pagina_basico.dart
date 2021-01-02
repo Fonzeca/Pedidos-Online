@@ -5,35 +5,32 @@ import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 
 // ignore: camel_case_types
-class basico extends StatelessWidget {
+class ItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ItemCubit(),
-      child: Scaffold(
-        backgroundColor: Color(0xFFe8e8e8),
-        appBar: AppBar(
-          title: Text('Pedidos Online'),
-          backgroundColor: Color(0xFF30475E),
-        ),
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TituloSection(
-                titulo: "Bebidas",
-                descripcion: "Bien frescas",
-              ),
-              Expanded(child: _crearGridView()),
-              TituloSection(
-                titulo: "Bebidas",
-                descripcion: "Bien frescas",
-              ),
-              Expanded(child: _crearGridView()),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Color(0xFFe8e8e8),
+      appBar: AppBar(
+        title: Text('Pedidos Online'),
+        backgroundColor: Color(0xFF30475E),
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TituloSection(
+              titulo: "Bebidas",
+              descripcion: "Bien frescas",
+            ),
+            Expanded(child: _crearGridView()),
+            TituloSection(
+              titulo: "Bebidas",
+              descripcion: "Bien frescas",
+            ),
+            Expanded(child: _crearGridView()),
+          ],
         ),
       ),
     );
@@ -42,6 +39,9 @@ class basico extends StatelessWidget {
 
 class ItemCubit extends Cubit<String> {
   ItemCubit() : super("none");
+  void loading() => emit("loading");
+  void success() => emit("success");
+  void failure() => emit("failure");
 }
 
 // Creo el GridView para retornar en el Scaffold
