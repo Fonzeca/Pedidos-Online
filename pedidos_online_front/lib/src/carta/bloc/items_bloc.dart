@@ -47,15 +47,17 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     List<SectionCarta> section_carta = List<SectionCarta>();
 
     //Unimos la dos listas, dejando de lado los items que no matcheen con una section
-    sections.forEach((element) {
-      var itemsFiltered = items
-          .where((x) => x.section == element.name)
-          .map((e) => ItemCarta(e.name, e.description, e.price, e.image));
+    //TODO: ver que pingo es     el error que ttira si le sacamos el siguiente if.
+    if (sections != null) {
+      sections.forEach((element) {
+        var itemsFiltered = items
+            .where((x) => x.section == element.name)
+            .map((e) => ItemCarta(e.name, e.description, e.price, e.image));
 
-      section_carta
-          .add(SectionCarta(element.name, element.image, itemsFiltered));
-    });
-
+        section_carta
+            .add(SectionCarta(element.name, element.image, itemsFiltered));
+      });
+    }
     yield state.copyWith(
         status: ItemsObtainedStatus.success, sections: section_carta);
   }

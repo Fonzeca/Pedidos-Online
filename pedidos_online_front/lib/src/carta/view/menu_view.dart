@@ -1,31 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
 import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 
 // ignore: camel_case_types
 class MenuView extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
-    context.read<ItemsBloc>().add(ItemsRequested());
-
+    context.watch<ItemsBloc>().add(ItemsRequested());
 
     return BlocListener<ItemsBloc, ItemsState>(
       listener: (context, state) {
-        switch(state.status){
+        switch (state.status) {
           case ItemsObtainedStatus.loading:
           case ItemsObtainedStatus.none:
             //Aparece el loading
+            EasyLoading.show(status: 'cargando...');
             break;
           case ItemsObtainedStatus.success:
             //Desaparece el loading
+            if (EasyLoading.isShow) {
+              EasyLoading.dismiss();
+            }
+            EasyLoading.showSuccess("Success!");
             break;
           case ItemsObtainedStatus.failure:
             //Toast fail
+            EasyLoading.showError("Failure!");
             break;
         }
       },
