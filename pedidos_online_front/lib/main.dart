@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pedidos_online_front/item_observer.dart';
+import 'package:item_repository/item_repository.dart';
+import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
+import 'package:pedidos_online_front/src/carta/view/manu_page.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_view.dart';
 
 void main() {
-  Bloc.observer = ItemObserver();
-  runApp(MyApp());
+  runApp(
+    MyApp(
+      itemRepository: ItemRepository(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({@required this.itemRepository})
+  : assert (itemRepository != null);
+
+  final ItemRepository itemRepository;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Raleway'),
-        title: 'Pedidos Online',
-        initialRoute: 'basico',
-        routes: {
-          'basico': (BuildContext context) => MenuView(),
-        });
+    return RepositoryProvider.value(
+      value: itemRepository,
+      child: BlocProvider(
+        create: (context) => ItemsBloc(itemRepository),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Raleway'),
+            title: 'Pedidos Online',
+            initialRoute: 'basico',
+            routes: {
+              'basico': (BuildContext context) => MenuPage(),
+            }),
+      ),
+    );
   }
 }
