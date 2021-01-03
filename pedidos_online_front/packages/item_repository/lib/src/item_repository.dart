@@ -53,7 +53,6 @@ class ItemRepository{
   }
 
   Future<List<Section>> getAllSections() async{
-
     String endpoint = "/section/list";
 
     var response = await client.get(IpServer + ":" + Port + endpoint);

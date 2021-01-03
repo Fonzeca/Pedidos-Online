@@ -17,8 +17,9 @@ class MenuPage extends StatelessWidget {
       ),
       backgroundColor: Color(0xFFe8e8e8),
       body: BlocProvider(
+        ///Creamos el Bloc, y tambien le disparamos un event
         create: (context) {
-          return ItemsBloc(RepositoryProvider.of<ItemRepository>(context));
+          return ItemsBloc(RepositoryProvider.of<ItemRepository>(context))..add(ItemsRequested());
         },
         child: MenuView(),
       ),

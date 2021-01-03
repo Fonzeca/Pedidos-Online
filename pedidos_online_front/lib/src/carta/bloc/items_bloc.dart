@@ -41,7 +41,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
       sections = await _itemRepository.getAllSections();
       items = await _itemRepository.getAllItems();
     } on Exception catch (_) {
-      state.copyWith(status: ItemsObtainedStatus.failure);
+      yield state.copyWith(status: ItemsObtainedStatus.failure);
     }
 
     List<SectionCarta> section_carta = List<SectionCarta>();

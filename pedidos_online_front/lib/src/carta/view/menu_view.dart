@@ -10,10 +10,9 @@ import 'package:pedidos_online_front/src/carta/view/title_section.dart';
 class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.watch<ItemsBloc>().add(ItemsRequested());
-
     return BlocListener<ItemsBloc, ItemsState>(
       listener: (context, state) {
+        print(state.status);
         switch (state.status) {
           case ItemsObtainedStatus.loading:
           case ItemsObtainedStatus.none:

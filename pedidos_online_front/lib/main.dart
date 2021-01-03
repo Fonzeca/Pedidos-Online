@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:item_repository/item_repository.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(fontFamily: 'Raleway'),
             title: 'Pedidos Online',
             initialRoute: 'basico',
+            builder: EasyLoading.init(),
             routes: {
               'basico': (BuildContext context) => MenuPage(),
             }),
