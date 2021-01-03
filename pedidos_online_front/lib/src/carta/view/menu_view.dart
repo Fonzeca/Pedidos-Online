@@ -70,20 +70,19 @@ class MenuView extends StatelessWidget {
   }
 
   Widget _buidlMenu(List<SectionCarta> sections){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: sections.map((e) => _buildSection(e)).toList()
-    );
-    ItemLabel(
-      description: "Amargo,con una lagrima de vaca",
-      name: "Cafe con leche",
-      price: "5",
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: sections.map((e) => _buildSection(e)).toList()
+      ),
     );
   }
 
   Widget _buildSection(SectionCarta section){
     return TituloSection(
       titulo: section.name,
+      itemsCarta: section.items,
     );
   }
 }

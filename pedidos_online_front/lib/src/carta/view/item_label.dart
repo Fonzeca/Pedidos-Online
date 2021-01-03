@@ -14,25 +14,29 @@ class ItemLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(name),
-                Expanded(
-                    child: Text(
-                  getDots(),
-                  maxLines: 1,
-                )),
-                Text("\$" + price)
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 7),
-                child: Opacity(opacity: 0.5, child: Text(description)))
-          ],
-        ));
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Row(
+                children: [
+                  Text(name),
+                  Expanded(
+                      child: Text(
+                    getDots(),
+                    maxLines: 1,
+                  )),
+                  Text("" + price)
+                ],
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 7),
+                  child: Opacity(opacity: 0.5, child: Text(description)))
+            ],
+          )),
+    );
   }
 
   static String getDots() {
