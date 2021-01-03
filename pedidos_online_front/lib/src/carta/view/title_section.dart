@@ -20,7 +20,7 @@ class TituloSection extends StatelessWidget {
             linea + titulo + linea,
             style: TextStyle(fontSize: styleT, color: Color(0xFF222831)),
           ),
-          Text(descripcion),
+          Text(descripcion != null ? descripcion : ""),
         ],
       ),
     );

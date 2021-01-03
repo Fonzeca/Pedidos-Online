@@ -50,9 +50,9 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     //TODO: ver que pingo es     el error que ttira si le sacamos el siguiente if.
     if (sections != null) {
       sections.forEach((element) {
-        var itemsFiltered = items
+        List<ItemCarta> itemsFiltered = items
             .where((x) => x.section == element.name)
-            .map((e) => ItemCarta(e.name, e.description, e.price, e.image));
+            .map((e) => ItemCarta(e.name, e.description, e.price, e.image)).toList();
 
         section_carta
             .add(SectionCarta(element.name, element.image, itemsFiltered));
