@@ -61,6 +61,7 @@ class TituloSection extends StatelessWidget {
             description: value.description,
             name: value.name,
             price: value.price,
+            image: value.image,
           ),
         )
       );

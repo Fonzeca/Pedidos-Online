@@ -8,8 +8,9 @@ class ItemLabel extends StatelessWidget {
   final String name;
   final String price;
   final String description;
+  final String image;
 
-  const ItemLabel({Key key, this.name, this.price, this.description})
+  const ItemLabel({Key key, this.name, this.price, this.description, this.image})
       : super(key: key);
 
   @override
@@ -22,6 +23,27 @@ class ItemLabel extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  Builder(
+                    builder: (context) {
+                      if(image != null && image.isNotEmpty){
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 45,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(image),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
                   Text(name),
                   Expanded(
                       child: Text(
