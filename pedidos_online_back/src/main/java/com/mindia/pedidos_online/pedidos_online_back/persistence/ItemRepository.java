@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.mindia.pedidos_online.pedidos_online_back.persistence.model.Item;
+import com.mindia.pedidos_online.pedidos_online_back.persistence.model.ItemBase;
 
 @Repository
 public class ItemRepository {
@@ -24,7 +24,7 @@ public class ItemRepository {
 	/**
 	 * Solo para tests 
 	 */
-	public void newItem(Item item) {
+	public void newItem(ItemBase item) {
 		mongoTemplate.insert(item);
 	}
 	
@@ -38,8 +38,8 @@ public class ItemRepository {
 		mongoTemplate.remove(query, "items");
 	}
 
-	public List<Item> getItems() {
-		return mongoTemplate.findAll(Item.class);
+	public List<ItemBase> getItems() {
+		return mongoTemplate.findAll(ItemBase.class, "items");
 	}
 	
 
