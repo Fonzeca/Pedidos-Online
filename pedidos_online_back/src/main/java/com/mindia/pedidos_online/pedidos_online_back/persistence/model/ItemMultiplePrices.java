@@ -3,6 +3,7 @@ package com.mindia.pedidos_online.pedidos_online_back.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Alexis Fonzo
  */
 
+@BsonDiscriminator(key = "disci", value = "ItemMultiplePrices")
 @Document(collection = "items")
 @TypeAlias("ItemMultiplePrices")
 public class ItemMultiplePrices extends ItemBase{

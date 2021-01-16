@@ -1,9 +1,15 @@
 package com.mindia.pedidos_online.pedidos_online_back.persistence.model;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public abstract class ItemBase {
+@BsonDiscriminator(key = "disci")
+@Document(collection = "items")
+@TypeAlias("Item")
+public class ItemBase {
 	@Id
 	protected ObjectId id;
 	
