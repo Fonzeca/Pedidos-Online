@@ -25,4 +25,25 @@ public class SectionController {
 	public List<PojoSection> getAllSections(){
 		return manager.getSections();
 	}
+	
+	/**
+	 * Solo para uso del unit Test
+	 */
+	public void newSection (String name, String image) {
+		manager.newSection(name, image);
+	}
+	
+	/**
+	 * Solo para uso del unit Test
+	 */
+	public void newSection (String name, String image, int type, List<String> categories) {
+		 manager.newSection(name, image, type, categories);
+	}
+	
+	/**
+	 * Solo para uso del unit Test
+	 */
+	public void deleteSection (String name) {
+		manager.deleteSection(name);
+	}
 }

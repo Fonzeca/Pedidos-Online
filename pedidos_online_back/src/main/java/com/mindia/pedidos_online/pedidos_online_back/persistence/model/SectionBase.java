@@ -2,7 +2,9 @@ package com.mindia.pedidos_online.pedidos_online_back.persistence.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "sections")
 public abstract class SectionBase {
 	@Id
 	protected ObjectId id;
