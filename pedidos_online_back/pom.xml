@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.mindia.pedidos_online</groupId>
 	<artifactId>pedidos_online_back</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.0.1</version>
 	<name>pedidos_online_back</name>
 	<description>Backend correspondiente al sistema de pedidos online de Mindia</description>
 

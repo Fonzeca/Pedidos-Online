@@ -1,5 +1,7 @@
 package com.mindia.pedidos_online.pedidos_online_back.persistence;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mindia.pedidos_online.pedidos_online_back.persistence.model.Item;
+import com.mindia.pedidos_online.pedidos_online_back.persistence.model.ItemBase;
+import com.mindia.pedidos_online.pedidos_online_back.persistence.model.ItemMultiplePrices;
 
 @Repository
 public class ItemRepository {
@@ -24,7 +28,7 @@ public class ItemRepository {
 	/**
 	 * Solo para tests 
 	 */
-	public void newItem(Item item) {
+	public void newItem(ItemBase item) {
 		mongoTemplate.insert(item);
 	}
 	
@@ -38,8 +42,12 @@ public class ItemRepository {
 		mongoTemplate.remove(query, "items");
 	}
 
-	public List<Item> getItems() {
-		return mongoTemplate.findAll(Item.class);
+	public List<ItemBase> getItems() {
+		List<ItemBase> list = new ArrayList<ItemBase>();
+		list.addAll(mongoTemplate.find(Query.query(Criteria.where("_class").is(Item.class.getSimpleName())), Item.class, "items"));
+		list.addAll(mongoTemplate.find(Query.query(Criteria.where("_class").is(ItemMultiplePrices.class.getSimpleName())), ItemMultiplePrices.class, "items"));
+		list.sort(Comparator.comparing(ItemBase::getId));
+		return list;
 	}
 	
 

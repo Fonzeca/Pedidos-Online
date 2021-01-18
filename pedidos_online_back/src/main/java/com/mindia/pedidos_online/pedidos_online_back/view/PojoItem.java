@@ -1,9 +1,13 @@
 package com.mindia.pedidos_online.pedidos_online_back.view;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mindia.pedidos_online.pedidos_online_back.persistence.model.Item;
+import com.mindia.pedidos_online.pedidos_online_back.persistence.model.ItemBase;
+import com.mindia.pedidos_online.pedidos_online_back.persistence.model.ItemMultiplePrices;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -11,6 +15,7 @@ import com.mindia.pedidos_online.pedidos_online_back.persistence.model.Item;
 	"description",
 	"section",
 	"price",
+	"prices",
 	"image"
 })
 public class PojoItem {
@@ -22,15 +27,24 @@ public class PojoItem {
 	String section;
 	@JsonProperty("price")
 	String price;
+	@JsonProperty("prices")
+	List<String> prices;
 	@JsonProperty("image")
 	String image;
 	
-	public PojoItem(Item item) {
-		name=item.getName();
-		description=item.getDescription();
-		section=item.getSection();
-		price=item.getPrice();
-		image=item.getImage();
+	public PojoItem(ItemBase item) {
+		name = item.getName();
+		description = item.getDescription();
+		section = item.getSection();
+		image = item.getImage();
+		
+		
+		if(item instanceof Item) {
+			price = ((Item)item).getPrice();
+		}else if(item instanceof ItemMultiplePrices) {
+			prices = ((ItemMultiplePrices)item).getPrices();
+		}
+		
 	}
 
 	public String getName() {
@@ -71,6 +85,14 @@ public class PojoItem {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public List<String> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<String> prices) {
+		this.prices = prices;
 	}
 	
 
