@@ -12,6 +12,7 @@ import com.mindia.pedidos_online.pedidos_online_back.persistence.model.SectionMu
 @JsonPropertyOrder({
 	"name",
 	"image",
+	"type",
 	"categories"
 })
 public class PojoSection {
@@ -19,6 +20,8 @@ public class PojoSection {
 	String name;
 	@JsonProperty("image")
 	String image;
+	@JsonProperty("type")
+	int type;
 	@JsonProperty("categories")
 	List<String> categories;
 	
@@ -27,6 +30,7 @@ public class PojoSection {
 		this.image = section.getImage();
 		
 		if(section instanceof SectionMultipleCategories) {
+			type = ((SectionMultipleCategories)section).getType();
 			categories = ((SectionMultipleCategories)section).getCategories();
 		}
 		
