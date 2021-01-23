@@ -50,12 +50,31 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     //TODO: ver que pingo es     el error que ttira si le sacamos el siguiente if.
     if (sections != null) {
       sections.forEach((element) {
-        List<ItemCarta> itemsFiltered = items
-            .where((x) => x.section == element.name)
-            .map((e) => ItemCarta(e.name, e.description, e.price, e.image)).toList();
+        List<Item> itemsFiltered;
 
+        //Preguntamos que tipo de section es, para filtrar bien los items correspondientes
+        if(element.type == 1){
+          //Filtramos los items de la section y los que tengan el array de prices en != null
+          itemsFiltered = items
+              .where((x) => x.section == element.name && x.prices != null && x.price == null).toList();
+        }else{
+          //Filtramos los items de la section y los que tengan el price en != null
+          itemsFiltered = items
+              .where((x) => x.section == element.name && x.prices == null && x.price != null).toList();
+        }
+
+        //Creamos una SectionCarta con los items dentro
         section_carta
-            .add(SectionCarta(element.name, element.image, itemsFiltered));
+          .add(
+            SectionCarta(
+              element.name,
+              element.image,
+              element.type,
+              element.categories,
+              itemsFiltered.map((e) => ItemCarta(e.name, e.description, e.price, e.image, e.prices)).toList()
+            )
+          );
+
       });
     }
     yield state.copyWith(

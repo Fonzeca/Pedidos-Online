@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'item_label.dart';
 
-class TituloSection extends StatelessWidget {
+class TituloSectionCategories extends StatelessWidget {
   static String linea = " ___ ";
   final String titulo;
   final double styleT = 20.0;
@@ -14,7 +14,7 @@ class TituloSection extends StatelessWidget {
   final List<String> categories;
   final PageController pageController = PageController();
 
-  TituloSection({Key key, @required this.titulo, this.descripcion, @required this.itemsCarta, this.itemsPerRow = 4, this.categories = null})
+  TituloSectionCategories({Key key, @required this.titulo, this.descripcion, @required this.itemsCarta, this.itemsPerRow = 4, this.categories})
       : assert(itemsCarta != null),
         assert(titulo != null),
         assert(itemsPerRow >= 1),
@@ -30,24 +30,24 @@ class TituloSection extends StatelessWidget {
             style: TextStyle(fontSize: styleT, color: Color(0xFF222831)),
           ),
           Text(descripcion != null ? descripcion : ""),
-          categories == null ?
-          _buildItems() :
-          _buildMultipleCtegories(),
+          _buildMultipleCategories(),
         ],
       ),
     );
   }
 
-  Widget _buildItems() {
+  Widget _buildItems(int categorie) {
     ///Inicializalizamos las listas
     List<Row> rows = List(); /// Lista de rows
     List<Widget> bubbleItems = List(); /// Lista que contiene los widgets de cada row
 
     ///Recorremos cada item de la lista de items.
     itemsCarta.asMap().forEach((index, value) {
+
       ///Preguntamos si él item es el ultimo de la fila
       ///O si el item es el ultimo de la lista
-      if(index % itemsPerRow == 0 || index == itemsCarta.length-1){
+      if((index % itemsPerRow == 0 || index == itemsCarta.length-1) && index != 0){
+
         ///Preguntamos si la cantidad el bubbleItems es menor a la cantidad de items por fila.
         ///Si es asi, la rellenamos, asi queda con el mismo tamaño que las otras
         while(bubbleItems.length < itemsPerRow){
@@ -59,18 +59,21 @@ class TituloSection extends StatelessWidget {
         ///Ponemos bubbleItems en vacio.
         bubbleItems = List();
       }
+
       ///Aca, por cada item de la lista, le agregamos al bubbleItems
       bubbleItems.add(
-        Expanded(
-          child: ItemLabel(
-            description: value.description,
-            name: value.name,
-            price: value.price,
-            image: value.image,
-
-          ),
-        )
+          Expanded(
+            child: ItemLabel(
+              description: value.description,
+              name: value.name,
+              image: value.image,
+              prices: value.prices,
+              categories: categories,
+            ),
+          )
       );
+
+
     });
 
     ///Retornamos una columna, que tiene la lista de Row
@@ -79,28 +82,7 @@ class TituloSection extends StatelessWidget {
     );
   }
 
-  Widget _buildMultipleCtegories(){
-    return Container(
-      child: Column(
-        children: [
-          SmoothPageIndicator(
-            count: categories.length,
-            controller: pageController,
-          ),
-          Container(
-            height: 400,
-            child: PageView(
-              scrollDirection: Axis.horizontal,
-              controller: pageController,
-              children: [
-                _buildItems(),
-                _buildItems()
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  Widget _buildMultipleCategories(){
+    return _buildItems(0);
   }
-
 }

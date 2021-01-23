@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
 import 'package:pedidos_online_front/src/carta/model/section_carta.dart';
 import 'package:pedidos_online_front/src/carta/view/item_label.dart';
 import 'package:pedidos_online_front/src/carta/view/title_section.dart';
+import 'package:pedidos_online_front/src/carta/view/title_section_categories.dart';
 
 // ignore: camel_case_types
 class MenuView extends StatelessWidget {
@@ -48,8 +50,21 @@ class MenuView extends StatelessWidget {
               );
                 break;
               case ItemsObtainedStatus.success:
+                int itemsPerRow = 4;
+                double sizeWidth = MediaQuery.of(context).size.width;
+                if(sizeWidth < 1100){
+                  itemsPerRow = 3;
+                }
+                if(sizeWidth < 800){
+                  itemsPerRow = 2;
+                }
+
+                if(sizeWidth < 600){
+                  itemsPerRow = 1;
+                }
+
                 return SingleChildScrollView(
-                  child: _buidlMenu(state.sections)
+                  child: _buidlMenu(state.sections, itemsPerRow)
                 );
                 break;
               case ItemsObtainedStatus.failure:
@@ -69,20 +84,33 @@ class MenuView extends StatelessWidget {
     );
   }
 
-  Widget _buidlMenu(List<SectionCarta> sections){
+  Widget _buidlMenu(List<SectionCarta> sections, int itemsPerRow){
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: sections.map((e) => _buildSection(e)).toList()
+        children: sections.map((e) => _buildSection(e, itemsPerRow)).toList()
       ),
     );
   }
 
-  Widget _buildSection(SectionCarta section){
-    return TituloSection(
-      titulo: section.name,
-      itemsCarta: section.items,
-    );
+  Widget _buildSection(SectionCarta section, int itemsPerRow){
+    if(section.type == 1){
+      return TituloSectionCategories(
+        titulo: section.name,
+        itemsPerRow: itemsPerRow,
+        itemsCarta: section.items,
+        categories: section.categories,
+      );
+    }else{
+      Widget wdg_section = TituloSection(
+        titulo: section.name,
+        itemsCarta: section.items,
+        itemsPerRow: itemsPerRow,
+      );
+      return wdg_section;
+    }
+
+
   }
 }
