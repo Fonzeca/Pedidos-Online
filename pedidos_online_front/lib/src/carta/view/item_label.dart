@@ -116,16 +116,13 @@ class ItemLabel extends StatelessWidget {
               padding: const EdgeInsets.only(left: 7),
               child: Opacity(
                 opacity: 0.5,
-                child: Container(
-                  color: Colors.green,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: 180
-                    ),
-                    child: Text(
-                      description,
-                    )
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 180
                   ),
+                  child: Text(
+                    description,
+                  )
                 ),
               ),
             ),

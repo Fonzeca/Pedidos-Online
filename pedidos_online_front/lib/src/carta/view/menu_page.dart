@@ -14,6 +14,16 @@ class MenuPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Pedidos Online'),
         backgroundColor: Color(0xFF30475E),
+        centerTitle: true,
+        leading: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: AssetImage("assets/images/burger.jpeg"),
+            )
+          ),
+        ),
+        leadingWidth: 100,
       ),
       backgroundColor: Color(0xFFe8e8e8),
       body: BlocProvider<ItemsBloc>(
