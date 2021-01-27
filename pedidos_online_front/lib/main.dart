@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:item_repository/item_repository.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
-import 'file:///C:/Users/Alexis%20Fonzo/Desktop/Mindia/Software/PedidosOnline/Pedidos%20Online/pedidos_online_front/lib/src/carta/view/menu_v1/menu_page.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v1/menu_page.dart';
+
 
 void main() {
   runApp(MyApp(
@@ -26,10 +27,10 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'Raleway'),
             title: 'Pedidos Online',
-            initialRoute: 'basico',
+            initialRoute: 'menu1',
             builder: EasyLoading.init(),
             routes: {
-              'basico': (BuildContext context) => MenuPage(),
+              'menu1': (BuildContext context) => MenuPage1(),
             }),
       ),
     );
