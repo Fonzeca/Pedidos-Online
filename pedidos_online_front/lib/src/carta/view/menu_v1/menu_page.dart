@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:item_repository/item_repository.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
-import 'package:pedidos_online_front/src/carta/view/menu_view.dart';
+import 'file:///C:/Users/Alexis%20Fonzo/Desktop/Mindia/Software/PedidosOnline/Pedidos%20Online/pedidos_online_front/lib/src/carta/view/menu_v1/menu_view.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);

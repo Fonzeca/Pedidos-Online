@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
 import 'package:pedidos_online_front/src/carta/model/section_carta.dart';
-import 'package:pedidos_online_front/src/carta/view/item_label.dart';
-import 'package:pedidos_online_front/src/carta/view/title_section.dart';
-import 'package:pedidos_online_front/src/carta/view/title_section_categories.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v1/title_section.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v1/title_section_categories.dart';
 
 // ignore: camel_case_types
 class MenuView extends StatelessWidget {
