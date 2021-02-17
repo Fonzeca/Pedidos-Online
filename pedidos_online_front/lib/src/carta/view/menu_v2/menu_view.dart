@@ -17,7 +17,6 @@ class MenuView2 extends StatelessWidget{
   ValueNotifier<int> valueNotifier = ValueNotifier<int>(-1);
 
   double kDesktopBreakpoint;
-  int listItemsIndex;
 
 
   @override
@@ -125,7 +124,6 @@ class MenuView2 extends StatelessWidget{
           title: Text(sections[index-1].name),
           onTap: () {
             valueNotifier.value = index-1;
-            listItemsIndex = -1;
             if(MediaQuery.of(context).size.width < kDesktopBreakpoint){
               Navigator.of(context).pop();
             }
@@ -138,12 +136,10 @@ class MenuView2 extends StatelessWidget{
   Widget _menu(int indexSection){
     List<ItemCarta> items = sections[indexSection].items;
 
-    print(listItemsIndex);
 
     return ResponsiveListScaffold.builder(
       itemCount: items.length,
       tabletFlexDetailView: 3,
-      index: listItemsIndex,
       detailBuilder: (context, index, tablet) {
         return DetailsScreen(
           appBar: tablet ? null : AppBar(),
