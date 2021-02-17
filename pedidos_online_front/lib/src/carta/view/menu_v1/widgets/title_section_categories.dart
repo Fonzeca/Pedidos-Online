@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pedidos_online_front/src/carta/model/item_carta.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'item_label.dart';
 
