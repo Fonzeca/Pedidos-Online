@@ -138,7 +138,6 @@ class MenuView2 extends StatelessWidget{
 
 
     return ResponsiveListScaffold.builder(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       itemCount: items.length,
       tabletFlexDetailView: 3,
