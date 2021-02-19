@@ -5,3 +5,5 @@ bool haveImageBackground = false;
 String uriImageBackground = "";
 
 String uriImageDrawer = "assets/images/praga.png";
+
+String appBarTitle = "Praga Bar";

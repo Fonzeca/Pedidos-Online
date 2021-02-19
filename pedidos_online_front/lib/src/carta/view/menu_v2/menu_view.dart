@@ -18,6 +18,10 @@ class MenuView2 extends StatelessWidget{
 
   double kDesktopBreakpoint;
 
+  String appBarTitleSection = appBarTitle;
+
+  //---------------------------------------------
+  // Esqueleto
 
   @override
   Widget build(BuildContext context) {
@@ -76,21 +80,21 @@ class MenuView2 extends StatelessWidget{
     );
   }
 
+  ///Esqueleto de la carta
   Widget _buildScaffold(){
     ResponsiveScaffold scaffold = ResponsiveScaffold(
-      title: Text("asd"),
+      title: ValueListenableBuilder(
+        valueListenable: valueNotifier,
+        builder: (context, value, child) => buildTitle(),
+      ),
       drawer: Drawer(
-        child: _buildDrawer()
+        child: buildDrawer()
       ),
       body: ValueListenableBuilder(
         valueListenable: valueNotifier,
         builder: (context, value, child) {
           if(value == -1){
-            return Container(
-              child: Center(
-                child: Text("Home"),
-              ),
-            );
+            return buildHome();
           }
           return Container(
             child: _menu(value)
@@ -103,135 +107,127 @@ class MenuView2 extends StatelessWidget{
     return scaffold;
   }
 
-  Widget _buildDrawer(){
+  //---------------------------------------------
+  //Drawer
+
+  Widget buildDrawer(){
     return ListView.builder(
       itemCount: sections.length + 1,
       itemBuilder: (context, index) {
         if(index == 0){
-          return DrawerHeader(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.topCenter,
-                image: ExactAssetImage(
-                    uriImageDrawer
-                ),
-                fit: BoxFit.none
-              )
-            ),
-          );
+          return buildDrawerHeader();
         }
-        return ListTile(
-          title: Text(sections[index-1].name),
-          onTap: () {
-            valueNotifier.value = index-1;
-            if(MediaQuery.of(context).size.width < kDesktopBreakpoint){
-              Navigator.of(context).pop();
-            }
-          },
-        );
+        return buildSectionsOnDrawer(context, index - 1);
       },
     );
   }
 
-  Widget _menu(int indexSection){
-    List<ItemCarta> items = sections[indexSection].items;
-
-
-    return ResponsiveListScaffold.builder(
-      resizeToAvoidBottomInset: false,
-      itemCount: items.length,
-      tabletFlexDetailView: 3,
-      detailBuilder: (context, index, tablet) {
-        return DetailsScreen(
-          appBar: tablet ? null : AppBar(),
-          body: Container(
-            child: Center(
-              child: Text(items[index].name),
-            ),
-          ),
-        );
-      },
-      tabletItemNotSelected: Container(
-        color: Colors.green
+  Widget buildDrawerHeader(){
+    return DrawerHeader(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              alignment: Alignment.topCenter,
+              image: ExactAssetImage(
+                  uriImageDrawer
+              ),
+              fit: BoxFit.none
+          )
       ),
-      itemBuilder: (context, index) {
-        ItemCarta item = items[index];
-        return Card(
-          margin: EdgeInsets.all(7),
-          child: Builder(
-            builder: (context) {
-
-              Widget title = Container(
-                  child: AutoSizeText(item.name,)
-              );
-
-              Widget trailing = Container(
-                child: Opacity(
-                    opacity: 0.7,
-                    child: AutoSizeText(item.description)
-                ),
-              );
-
-              Widget leading = null;
-
-              if(item.image != null && item.image != ''){
-                leading = Image(
-                  image: AssetImage(item.image),
-                );
-              }
-
-              return ListTile(
-                title: title,
-                leading: leading,
-                subtitle: trailing,
-                isThreeLine: true,
-              );
-            },
-          ),
-        );
-      },
     );
+  }
 
+  Widget buildSectionsOnDrawer(BuildContext context, int index){
+    return ListTile(
+      title: Text(sections[index].name),
+      onTap: () => clickSections(context, index),
+    );
+  }
 
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
+  void clickSections(BuildContext context, int index){
+    valueNotifier.value = index;
+    appBarTitleSection = sections[index].name;
+    if(MediaQuery.of(context).size.width < kDesktopBreakpoint){
+      Navigator.of(context).pop();
+    }
+  }
 
-        ItemCarta item = items[index];
-        return Card(
-          margin: EdgeInsets.all(7),
-          child: Builder(
-            builder: (context) {
-              
-              Widget title = Container(
-                child: AutoSizeText(item.name,)
-              );
+  //---------------------------------------------
+  //Bar and home
 
-              Widget trailing = Container(
-                child: Opacity(
-                    opacity: 0.7,
-                    child: AutoSizeText(item.description)
-                ),
-              );
+  Widget buildTitle(){
+    return Text(appBarTitleSection);
+  }
 
-              Widget leading = null;
+  Widget buildHome(){
+    return Container(
+      child: Center(
+        child: Text("Home"),
+      ),
+    );
+  }
 
-              if(item.image != null && item.image != ''){
-                leading = Image(
-                  image: AssetImage(item.image),
-                );
-              }
+  //---------------------------------------------
+  //Menu y details
 
-              return ListTile(
-                title: title,
-                leading: leading,
-                subtitle: trailing,
-                isThreeLine: true,
-              );
-            },
-          ),
-        );
-      },
+  Widget _menu(int indexSection){
+    return ResponsiveListScaffold.builder(
+      itemCount: sections[indexSection].items.length,
+      tabletFlexDetailView: 3,
+      detailBuilder: (context, index, tablet) => buildDetailsScreenOnItemSelected(context, index, tablet, indexSection),
+      tabletItemNotSelected: Container(
+          color: Colors.green
+      ),
+      itemBuilder: (context, index) => buildItemsOnSection(context, index, indexSection),
+    );
+  }
+
+  Widget buildItemsOnSection(BuildContext context, int index, int indexSection){
+    ItemCarta item = sections[indexSection].items[index];
+    return Card(
+      margin: EdgeInsets.all(7),
+      child: Builder(
+        builder: (context) {
+
+          Widget title = Container(
+              child: AutoSizeText(item.name,)
+          );
+
+          Widget trailing = Container(
+            child: Opacity(
+                opacity: 0.7,
+                child: AutoSizeText(item.description)
+            ),
+          );
+
+          Widget leading = null;
+
+          if(item.image != null && item.image != ''){
+            leading = Image(
+              image: AssetImage(item.image),
+            );
+          }
+
+          return ListTile(
+            title: title,
+            leading: leading,
+            subtitle: trailing,
+            isThreeLine: true,
+          );
+        },
+      ),
+    );
+  }
+
+  DetailsScreen buildDetailsScreenOnItemSelected(BuildContext context, int index, bool tablet, int indexSection){
+    ItemCarta item = sections[indexSection].items[index];
+
+    return DetailsScreen(
+      appBar: tablet ? null : AppBar(),
+      body: Container(
+        child: Center(
+          child: Text(item.name),
+        ),
+      ),
     );
   }
 
