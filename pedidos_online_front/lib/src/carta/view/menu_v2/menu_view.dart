@@ -1,11 +1,19 @@
 
+import 'dart:html';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
+import 'package:pedidos_online_front/src/carta/bloc/kart_bloc.dart';
 import 'package:pedidos_online_front/src/carta/model/item_carta.dart';
+import 'package:pedidos_online_front/src/carta/model/item_kart.dart';
 import 'package:pedidos_online_front/src/carta/model/section_carta.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v2/details_view.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/custom_labeled_radio.dart';
+import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/kart_dialog.dart';
 import 'package:responsive_scaffold/templates/layout/scaffold.dart';
 import 'package:responsive_scaffold/templates/list/responsive_list.dart';
 
@@ -107,37 +115,41 @@ class MenuView2 extends StatelessWidget{
     return scaffold;
   }
 
-  //---------------------------------------------
   //Drawer
 
   Widget buildDrawer(){
-    return ListView.builder(
-      itemCount: sections.length + 1,
-      itemBuilder: (context, index) {
-        if(index == 0){
-          return buildDrawerHeader();
-        }
-        return buildSectionsOnDrawer(context, index - 1);
-      },
+    return Container(
+      color: backgroundColor,
+      child: ListView.builder(
+        itemCount: sections.length + 1,
+        itemBuilder: (context, index) {
+          if(index == 0){
+            return buildDrawerHeader();
+          }
+          return buildSectionsOnDrawer(context, index - 1);
+        },
+      ),
     );
   }
 
   Widget buildDrawerHeader(){
     return DrawerHeader(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              alignment: Alignment.topCenter,
-              image: ExactAssetImage(
-                  uriImageDrawer
-              ),
-              fit: BoxFit.none
-          )
+        image: DecorationImage(
+          alignment: Alignment.topCenter,
+          image: ExactAssetImage(
+              uriImageDrawer
+          ),
+          fit: BoxFit.none
+        )
       ),
     );
   }
 
   Widget buildSectionsOnDrawer(BuildContext context, int index){
     return ListTile(
+      hoverColor: itemHoverColorDrawer,
+      focusColor: itemHoverColorDrawer,
       title: Text(sections[index].name),
       onTap: () => clickSections(context, index),
     );
@@ -151,7 +163,6 @@ class MenuView2 extends StatelessWidget{
     }
   }
 
-  //---------------------------------------------
   //Bar and home
 
   Widget buildTitle(){
@@ -159,21 +170,33 @@ class MenuView2 extends StatelessWidget{
   }
 
   Widget buildHome(){
-    return Container(
-      child: Center(
-        child: Text("Home"),
-      ),
+    return BlocBuilder<KartBloc, KartState>(
+      builder: (context, snapshot) {
+        return Container(
+          color: backgroundColor,
+          child: Center(
+            child: Text("Home"),
+          ),
+        );
+      }
     );
   }
 
-  //---------------------------------------------
   //Menu y details
 
   Widget _menu(int indexSection){
     return ResponsiveListScaffold.builder(
+      backgroundColor: backgroundColor,
+      floatingActionButton: buildFloatingButton(),
       itemCount: sections[indexSection].items.length,
-      tabletFlexDetailView: 3,
-      detailBuilder: (context, index, tablet) => buildDetailsScreenOnItemSelected(context, index, tablet, indexSection),
+      tabletFlexDetailView: 2,
+      detailBuilder: (context, index, tablet) => DetailsScreen(
+        body: DetailsView(
+          isTablet: tablet,
+          item: sections[indexSection].items[index],
+          sectionCategories: sections[indexSection].categories,
+        )
+      ),
       tabletItemNotSelected: Container(
           color: Colors.green
       ),
@@ -192,7 +215,7 @@ class MenuView2 extends StatelessWidget{
               child: AutoSizeText(item.name,)
           );
 
-          Widget trailing = Container(
+          Widget subtitle = Container(
             child: Opacity(
                 opacity: 0.7,
                 child: AutoSizeText(item.description)
@@ -200,6 +223,45 @@ class MenuView2 extends StatelessWidget{
           );
 
           Widget leading = null;
+
+          Widget trailing = null;
+
+          if(item.prices != null){
+            trailing = Container(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(item.prices[0]),
+                      Opacity(opacity: 0.5, child: Text(sections[indexSection].categories[0]))
+                    ],
+                  ),
+                  SizedBox(width: 10,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(item.prices[1]),
+                      Opacity(opacity: 0.5, child: Text(sections[indexSection].categories[1]))
+                    ],
+                  )
+                ],
+              ),
+            );
+          }else{
+            trailing = Container(
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(item.price),
+                ],
+              ),
+            );
+          }
+
 
           if(item.image != null && item.image != ''){
             leading = Image(
@@ -210,7 +272,8 @@ class MenuView2 extends StatelessWidget{
           return ListTile(
             title: title,
             leading: leading,
-            subtitle: trailing,
+            subtitle: subtitle,
+            trailing: trailing,
             isThreeLine: true,
           );
         },
@@ -221,13 +284,131 @@ class MenuView2 extends StatelessWidget{
   DetailsScreen buildDetailsScreenOnItemSelected(BuildContext context, int index, bool tablet, int indexSection){
     ItemCarta item = sections[indexSection].items[index];
 
-    return DetailsScreen(
-      appBar: tablet ? null : AppBar(),
-      body: Container(
-        child: Center(
-          child: Text(item.name),
-        ),
+    Widget options = null;
+
+    int indexOfSelected = 0;
+
+    if(item.prices != null && item.prices.isNotEmpty){
+      List<Widget> radioButtons = item.prices.map((e) =>
+        LabeledRadio(
+          value: item.prices.indexOf(e),
+          groupValue: indexOfSelected,
+          onChanged: (value) {
+            indexOfSelected = value;
+          },
+          padding: EdgeInsets.all(0),
+          label: sections[indexSection].categories[item.prices.indexOf(e)],
+        )
+
+      ).toList();
+
+      options = Column(
+        children: radioButtons,
+      );
+    }
+
+    Widget content = Container(
+      padding: EdgeInsets.all(15),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(item.name),
+          Divider(
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          Opacity(
+            opacity: 0.7,
+            child: Text(item.description)
+          ),
+          SizedBox(height: 50,),
+          options ?? SizedBox(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () => clickBuy(context, item),
+                child: Text("Comprar"),
+              ),
+              ElevatedButton(
+                onPressed: () => clickAddToKart(context, item),
+                child: Text("Agregar al carrito"),
+              )
+            ],
+          )
+        ],
       ),
+    );
+
+    if(tablet){
+      return DetailsScreen(
+        body: Container(
+          color: backgroundColor,
+          child: Center(
+            child: Card(
+              margin: EdgeInsets.all(12),
+              child: content
+            ),
+          ),
+        ),
+      );
+    }
+
+    return DetailsScreen(
+      body: Container(
+        child: content,
+      ),
+    );
+  }
+
+  void clickAddToKart(BuildContext context, ItemCarta item){
+    BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: item.price, quantity: 1));
+  }
+
+  void clickBuy(BuildContext context, ItemCarta item){
+    BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: item.price, quantity: 1));
+    showDialog(
+      context: context,
+      builder: (context) => DialogKart(),
+    );
+  }
+
+  //FloatingButton
+
+  Widget buildFloatingButton(){
+    return BlocBuilder<KartBloc, KartState>(
+      builder: (context, state) {
+        Badge badge = null;
+        if(state.items != null && state.items.isNotEmpty){
+          int count = 0;
+          state.items.forEach((element) {count += element.quantity;});
+
+          badge = Badge(
+              badgeContent: Text(count.toString()),
+              position: BadgePosition.topStart(top: -25),
+              animationType: BadgeAnimationType.scale,
+              animationDuration: Duration(milliseconds: 50),
+              padding: EdgeInsets.all(5.5),
+              child: Icon(Icons.shopping_cart)
+          );
+
+        }
+
+        return FloatingActionButton(
+          child: badge ?? Icon(Icons.shopping_cart),
+          onPressed: () {
+            clickKartButton(context);
+          },
+        );
+      },
+    );
+  }
+
+  void clickKartButton(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (context) => DialogKart(),
     );
   }
 

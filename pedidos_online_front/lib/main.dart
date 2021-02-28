@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:item_repository/item_repository.dart';
 import 'package:pedidos_online_front/src/carta/bloc/items_bloc.dart';
+import 'package:pedidos_online_front/src/carta/bloc/kart_bloc.dart';
+import 'package:pedidos_online_front/src/carta/model/item_kart.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_v1/menu_page.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_v2/menu_page.dart';
 
@@ -22,8 +24,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: itemRepository,
-      child: BlocProvider(
-        create: (context) => ItemsBloc(itemRepository),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ItemsBloc(itemRepository)..add(ItemsRequested()),
+          ),
+          BlocProvider(
+            create: (context) => KartBloc(),
+          )
+        ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'Raleway'),
@@ -33,8 +42,9 @@ class MyApp extends StatelessWidget {
             routes: {
               'menu1': (BuildContext context) => MenuPage1(),
               'menu2': (BuildContext context) => MenuPage2(),
-            }),
-      ),
+            }
+        ),
+      )
     );
   }
 }

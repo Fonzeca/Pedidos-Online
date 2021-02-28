@@ -19,8 +19,6 @@ class ItemRepository{
 
     var response = await client.get(IpServer + ":" + Port + endpoint);
 
-    print("getAllItems/ Status: " + response.statusCode.toString() + " Body: " + response.body);
-
     if(response.statusCode != 200) throw new Exception ("No se pudo conectar.");
 
     var jsonData = json.decode(response.body);
@@ -37,8 +35,6 @@ class ItemRepository{
     String params = "?section"+section;
 
     var response = await client.get(IpServer + ":" + Port + endpoint + params);
-
-    print("getItemsBySection/ Status: " + response.statusCode.toString() + " Body: " + response.body);
 
     if(response.statusCode != 200){
       throw new Exception("No se pudo conectar.");
@@ -57,8 +53,6 @@ class ItemRepository{
     String endpoint = "/section/list";
 
     var response = await client.get(IpServer + ":" + Port + endpoint);
-
-    print("getAllSections/ Status: " + response.statusCode.toString() + " Body: " + response.body);
 
     if(response.statusCode != 200) throw new Exception ("No se pudo conectar.");
 
