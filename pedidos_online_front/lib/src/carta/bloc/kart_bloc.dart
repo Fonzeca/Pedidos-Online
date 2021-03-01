@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pedidos_online_front/src/carta/model/item_kart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'kart_event.dart';
 part 'kart_state.dart';
@@ -20,7 +22,7 @@ class KartBloc extends Bloc<KartEvent, KartState> {
     }else if(event is KartRemoving) {
       yield _mapKartRemovingToState(event);
     }else if(event is KartBuying){
-      yield _mapKartBuyingToState(event);
+      yield* _mapKartBuyingToState(event);
     }
   }
 
@@ -33,7 +35,7 @@ class KartBloc extends Bloc<KartEvent, KartState> {
 
     List<ItemKart> list = List.from(state.items ?? []);
     if(list != null && list.length > 0){
-      int indexOfSame = list.indexWhere((element) => element.name == item.name);
+      int indexOfSame = list.indexWhere((element) => element.name == item.name && element.category == item.category);
       if(indexOfSame != -1) {
         ///Significa que ya existe el item en el carrito
         ///Hay que sumarle el [item.quantity]
@@ -55,9 +57,9 @@ class KartBloc extends Bloc<KartEvent, KartState> {
   KartState _mapKartRemovingToState(KartRemoving event){
     List<ItemKart> list = List.from(state.items ?? []);
     if(event.isAll){
-      list.removeWhere((element) => element.name == event.name);
+      list.removeWhere((element) => element.name == event.name && element.category == event.category);
     }else{
-      int indexOfSame = list.indexWhere((element) => element.name == event.name);
+      int indexOfSame = list.indexWhere((element) => element.name == event.name && element.category == event.category);
 
       if(list[indexOfSame].quantity == 1){
         list.removeAt(indexOfSame);
@@ -69,13 +71,52 @@ class KartBloc extends Bloc<KartEvent, KartState> {
     return state.copyWith(items: list);
   }
 
-  KartState _mapKartBuyingToState(KartBuying event) {
+  Stream<KartState> _mapKartBuyingToState(KartBuying event) async* {
+    String mensaje = "";
+    String numero = "+5492944614021";
 
+    mensaje += "Diego puto\n";
+
+    mensaje += "Lista: \n";
+
+    event.list.forEach((element) {
+      int cantidad = element.quantity;
+      int precioTotal = element.price * element.quantity;
+      String category = element.category;
+      String nombre = element.name;
+      mensaje += "$cantidad $nombre";
+
+      if(category != null && category.isNotEmpty){
+        mensaje += " $category";
+      }
+
+      mensaje += " = $precioTotal";
+
+      mensaje += "\n";
+    });
+
+    mensaje += "El total es \$" + event.total.toString();
+
+
+    final Uri _urlToWhatsapp = Uri(
+      scheme: "https",
+      path: "wa.me/$numero",
+      queryParameters: {
+        "text" :  mensaje
+      }
+    );
     //TODO: Acá armar mensaje
     //Averigur sobre URLEncoded
     //https://wa.me/+5492966676495?text=quierocomprartalcosa
 
-    return state.copyWith(items: []);
+    if(await canLaunch(_urlToWhatsapp.toString())){
+      await launch(_urlToWhatsapp.toString());
+    } else {
+      EasyLoading.showError("No se pudo enviar el mensaje");
+    }
+
+
+    yield state;
   }
 
 }

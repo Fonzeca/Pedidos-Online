@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,7 @@ class DetailsView extends StatelessWidget{
   final ItemCarta item;
   final bool isTablet;
 
-
+  ValueNotifier<int> indexOfCategorieSelected = ValueNotifier<int>(0);
 
   DetailsView({this.sectionCategories, this.item, this.isTablet});
 
@@ -81,16 +83,14 @@ class DetailsView extends StatelessWidget{
       return null;
     }
 
-    ValueNotifier<int> indexOfSelected = ValueNotifier<int>(0);
-
     List<Widget> radioButtons = item.prices.map((e) =>
         ValueListenableBuilder(
-          valueListenable: indexOfSelected,
+          valueListenable: indexOfCategorieSelected,
           builder: (context, value, child) => LabeledRadio(
             value: item.prices.indexOf(e),
-            groupValue: indexOfSelected.value,
+            groupValue: indexOfCategorieSelected.value,
             onChanged: (value) {
-              indexOfSelected.value = value;
+              indexOfCategorieSelected.value = value;
             },
             padding: EdgeInsets.all(0),
             label: sectionCategories[item.prices.indexOf(e)],
@@ -106,11 +106,21 @@ class DetailsView extends StatelessWidget{
 
 
   void clickAddToKart(BuildContext context, ItemCarta item){
-    BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: item.price, quantity: 1));
+    String price;
+    String category;
+    if(item.prices == null || item.prices.isEmpty){
+      price = item.price;
+      category = null;
+    }else{
+      price = item.prices[indexOfCategorieSelected.value];
+      category = sectionCategories[indexOfCategorieSelected.value];
+    }
+
+    BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: price, quantity: 1, categorie: category));
   }
 
   void clickBuy(BuildContext context, ItemCarta item){
-    BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: item.price, quantity: 1));
+    clickAddToKart(context, item);
     showDialog(
       context: context,
       builder: (context) => DialogKart(),

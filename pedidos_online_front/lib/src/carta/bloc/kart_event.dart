@@ -24,19 +24,24 @@ class KartAdding extends KartEvent{
 
 class KartRemoving extends KartEvent{
 
-  KartRemoving({this.name, this.isAll = false});
+  KartRemoving({this.name, this.category, this.isAll = false});
 
   final String name;
+  final String category;
   final bool isAll;
 
   @override
-  List<Object> get props => [name, isAll];
+  List<Object> get props => [name, isAll, category];
 }
 
 class KartBuying extends KartEvent{
 
+  final List<ItemKart> list;
+  final int total;
+
+  KartBuying({@required this.list, @required this.total});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [list];
 
 }
