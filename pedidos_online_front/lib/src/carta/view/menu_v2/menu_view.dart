@@ -16,6 +16,7 @@ import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/custom_label
 import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/kart_dialog.dart';
 import 'package:responsive_scaffold/templates/layout/scaffold.dart';
 import 'package:responsive_scaffold/templates/list/responsive_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'configuration.dart';
 
@@ -405,11 +406,19 @@ class MenuView2 extends StatelessWidget{
     );
   }
 
-  void clickKartButton(BuildContext context){
+  Future<void> clickKartButton(BuildContext context) async {
+
+    String savedAddress = await tryToGetSavedAddress();
+
     showDialog(
       context: context,
-      builder: (context) => DialogKart(),
+      builder: (context) => DialogKart(savedAddress: savedAddress,),
     );
+  }
+
+  Future<String> tryToGetSavedAddress() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get("address")?.toString();
   }
 
 }

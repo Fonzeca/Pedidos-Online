@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pedidos_online_front/src/carta/model/item_kart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'kart_event.dart';
@@ -94,6 +95,20 @@ class KartBloc extends Bloc<KartEvent, KartState> {
 
       mensaje += "\n";
     });
+
+    if(event.address != null && event.address.isNotEmpty){
+      RegExp reg = RegExp(r"[\s\w,.]{1,30}");
+      if(!reg.hasMatch(event.address)){
+        EasyLoading.showError("No se permiten caracteres espciales en la dirección");
+        yield state;
+        return;
+      }
+
+      mensaje += "Mandarlo a " + event.address + "\n";
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("address", event.address);
+    }
 
     mensaje += "El total es \$" + event.total.toString();
 

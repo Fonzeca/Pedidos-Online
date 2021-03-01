@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:pedidos_online_front/src/carta/bloc/kart_bloc.dart';
 import 'package:pedidos_online_front/src/carta/model/item_kart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DialogKart extends StatelessWidget{
+  final String savedAddress;
+
+  DialogKart({@required this.savedAddress});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +29,7 @@ class DialogKart extends StatelessWidget{
 
   Widget buildContent(BuildContext context, KartState state){
     int total = 0;
+    String address = savedAddress;
 
 
     if(state.items == null || state.items.isEmpty){
@@ -92,12 +98,39 @@ class DialogKart extends StatelessWidget{
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Dirección: "),
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Dirección para delivery",
+                      hintStyle: TextStyle(color: Colors.black26)
+                    ),
+                    maxLength: 30,
+                    controller: TextEditingController(text: address),
+                    onChanged: (value) {
+                      if(value.isNotEmpty){
+                        address = value;
+                      }else{
+                        address = null;
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10,),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(child: Container()),
                 ElevatedButton(
                   onPressed: () {
-                    clickFinalBuy(context, state.items);
+                    clickFinalBuy(context, state.items, address);
                   },
                   child: Row(
                     children: [
@@ -158,11 +191,10 @@ class DialogKart extends StatelessWidget{
     BlocProvider.of<KartBloc>(context).add(KartRemoving(name: item.name, category: item.category, isAll: true));
   }
 
-  void clickFinalBuy(BuildContext context, List<ItemKart> list){
+  void clickFinalBuy(BuildContext context, List<ItemKart> list, String address){
     int total = 0;
     list.forEach((element) {total += (element.price * element.quantity);});
 
-    BlocProvider.of<KartBloc>(context).add(KartBuying(list: list, total: total));
+    BlocProvider.of<KartBloc>(context).add(KartBuying(list: list, total: total, address: address));
   }
-
 }

@@ -38,10 +38,11 @@ class KartBuying extends KartEvent{
 
   final List<ItemKart> list;
   final int total;
+  final String address;
 
-  KartBuying({@required this.list, @required this.total});
+  KartBuying({@required this.list, @required this.total, this.address});
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [list, total, address];
 
 }

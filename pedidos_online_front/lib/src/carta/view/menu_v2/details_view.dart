@@ -8,6 +8,7 @@ import 'package:pedidos_online_front/src/carta/model/item_carta.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/custom_labeled_radio.dart';
 import 'package:pedidos_online_front/src/carta/view/menu_v2/widgets/kart_dialog.dart';
 import 'package:responsive_scaffold/data/classes/details.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'configuration.dart';
 
@@ -123,15 +124,23 @@ class DetailsView extends StatelessWidget{
     }
   }
 
-  void clickBuy(BuildContext context, ItemCarta item){
+  Future<void> clickBuy(BuildContext context, ItemCarta item) async {
     clickAddToKart(context, item);
     if(!isTablet){
       Navigator.of(context).pop();
     }
+
+    String savedAddress = await tryToGetSavedAddress();
+
     showDialog(
       context: context,
-      builder: (context) => DialogKart(),
+      builder: (context) => DialogKart(savedAddress: savedAddress,),
     );
+  }
+
+  Future<String> tryToGetSavedAddress() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get("address")?.toString();
   }
 
 }
