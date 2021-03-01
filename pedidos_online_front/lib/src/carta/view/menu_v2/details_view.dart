@@ -117,10 +117,17 @@ class DetailsView extends StatelessWidget{
     }
 
     BlocProvider.of<KartBloc>(context).add(KartAdding(name: item.name, price: price, quantity: 1, categorie: category));
+
+    if(!isTablet){
+      Navigator.of(context).pop();
+    }
   }
 
   void clickBuy(BuildContext context, ItemCarta item){
     clickAddToKart(context, item);
+    if(!isTablet){
+      Navigator.of(context).pop();
+    }
     showDialog(
       context: context,
       builder: (context) => DialogKart(),

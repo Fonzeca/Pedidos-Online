@@ -90,7 +90,7 @@ class KartBloc extends Bloc<KartEvent, KartState> {
         mensaje += " $category";
       }
 
-      mensaje += " = $precioTotal";
+      mensaje += " = \$$precioTotal";
 
       mensaje += "\n";
     });
